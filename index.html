@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Abhishek Beats — ambient street-corner radio</title>
+<meta name="description" content="Abhishek Beats: hamesha-on radio, 90s Hindi film gaane, ek ilaake ke corner ka mood.">
+<link rel="canonical" href="https://abhishekbeats.in/">
+<meta property="og:title" content="Abhishek Beats — an ambient street-corner radio">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://abhishekbeats.in/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#170f2b; --night-2:#1f1440;
+    --amber:#ff7a45; --teal:#2ec4b6;
+    --cream:#f5e8d8; --cream-dim:#cbb9a3;
+    --line:rgba(245,232,216,0.16);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--night); color:var(--cream); font-family:'DM Sans',sans-serif; min-height:100vh; display:flex; justify-content:center;}
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:0.001ms !important; animation-iteration-count:1 !important;} }
+  a{color:inherit;}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--teal); outline-offset:3px;}
+  .page{width:100%; max-width:480px;}
+
+  /* full-bleed hero with overlay text, like the original barbershop backdrop */
+  .hero{position:relative; overflow:hidden;}
+  .hero svg{display:block; width:100%; height:auto;}
+  .hero-overlay{position:absolute; inset:0; background:linear-gradient(180deg, rgba(23,15,43,0.15) 0%, rgba(23,15,43,0.55) 60%, rgba(23,15,43,0.96) 100%);}
+  .topbar{position:absolute; top:0; left:0; right:0; display:flex; align-items:center; justify-content:space-between; padding:16px 18px; font-family:'Space Mono',monospace; font-size:12px; z-index:2;}
+  .online{display:flex; align-items:center; gap:6px; color:var(--cream-dim);}
+  .dot{width:7px; height:7px; border-radius:50%; background:var(--teal); box-shadow:0 0 8px var(--teal); animation:pulse 1.8s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.75);}}
+  .plat-links{display:flex; gap:14px;}
+  .plat-links a{text-decoration:none; color:var(--cream-dim); border-bottom:1px solid transparent;}
+  .plat-links a:hover{color:var(--cream); border-color:var(--cream-dim);}
+  .navrow{position:absolute; top:44px; left:18px; right:18px; display:flex; gap:16px; font-size:13px; z-index:2;}
+  .navrow a{text-decoration:none; color:var(--cream-dim); border-bottom:1px solid transparent;}
+  .navrow a:hover{color:var(--amber); border-color:var(--amber);}
+
+  .hero-title{position:absolute; left:20px; right:20px; bottom:18px; z-index:2;}
+  .hi-title{font-family:'Baloo 2',sans-serif; font-weight:800; font-size:44px; line-height:1.02; margin:0;
+    background:linear-gradient(90deg,var(--amber),#ffb08a); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .en-title{font-family:'Space Mono',monospace; font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--cream-dim); margin:6px 0 0;}
+
+  .eq{position:absolute; left:0; right:0; bottom:0; height:34px; display:flex; align-items:flex-end; gap:3px; padding:0 20px; opacity:0.55; z-index:1;}
+  .eq span{flex:1; background:linear-gradient(180deg,var(--amber),transparent); border-radius:2px 2px 0 0; animation:bar 1.2s ease-in-out infinite;}
+  @keyframes bar{0%,100%{height:8%;}50%{height:85%;}}
+
+  .body-pad{padding:22px 20px 40px;}
+
+  .name-row{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+  .badge{width:34px; height:34px; border-radius:9px; flex-shrink:0;
+    background:conic-gradient(var(--amber) 0deg 90deg, var(--night-2) 90deg 180deg, var(--teal) 180deg 270deg, var(--night-2) 270deg 360deg);
+    position:relative;}
+  .badge::after{content:"";position:absolute; inset:8px; background:var(--night); border-radius:5px;}
+  .name-row .hi-small{font-family:'Baloo 2',sans-serif; font-weight:700; font-size:16px;}
+  .name-row .en-small{font-size:12px; color:var(--cream-dim);}
+
+  .tagline{font-size:15px; line-height:1.65; color:var(--cream-dim); margin:0 0 4px; max-width:44ch;}
+
+  .section-label{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--cream-dim); margin:26px 0 10px;}
+  .chips{display:flex; flex-wrap:wrap; gap:9px; margin-bottom:6px;}
+  .chip{font-size:14px; padding:9px 14px; border-radius:999px; border:1px solid var(--line); text-decoration:none; color:var(--cream); background:rgba(245,232,216,0.03);}
+  .chip:hover{border-color:var(--amber); background:rgba(255,122,69,0.09);}
+  .chip.all{border-color:var(--teal); color:var(--teal);}
+  .chips-links{display:flex; gap:16px; margin:14px 0 0;}
+  .chips-links a{font-size:14px; text-decoration:none; border-bottom:1px solid var(--line); padding-bottom:2px;}
+  .chips-links a:hover{border-color:var(--amber);}
+
+  /* real player */
+  .player{border:1px solid var(--line); border-radius:18px; padding:14px; margin:26px 0 22px; background:rgba(245,232,216,0.03);}
+  .player-top{display:flex; align-items:center; gap:14px;}
+  .thumb{width:56px; height:56px; border-radius:10px; overflow:hidden; flex-shrink:0; background:var(--night-2); position:relative;}
+  .thumb img{width:100%; height:100%; object-fit:cover; display:block;}
+  .thumb .reelspin{position:absolute; inset:0; border-radius:10px; border:2px solid var(--amber); opacity:0; animation:none;}
+  .thumb.playing .reelspin{opacity:1; animation:spin 3s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .player-info{flex:1; min-width:0;}
+  .player-info .now{font-size:12px; color:var(--cream-dim); font-family:'Space Mono',monospace;}
+  .player-info .track{font-size:14px; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .playbtn{width:40px; height:40px; border-radius:50%; border:1px solid var(--amber); background:transparent; color:var(--amber); cursor:pointer; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:16px;}
+  .playbtn:hover{background:rgba(255,122,69,0.12);}
+  .progress-row{display:flex; align-items:center; gap:8px; margin-top:12px; font-family:'Space Mono',monospace; font-size:11px; color:var(--cream-dim);}
+  .bar{flex:1; height:3px; border-radius:2px; background:var(--line); position:relative; overflow:hidden;}
+  .bar-fill{position:absolute; left:0; top:0; bottom:0; width:0%; background:var(--amber);}
+  #yt-audio{position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;}
+  .yt-wrap{border-radius:12px; overflow:hidden; border:1px solid var(--line);}
+  .yt-wrap iframe{display:block;}
+
+  .credit{font-size:13px; color:var(--cream-dim); line-height:1.7; margin:6px 0 20px;}
+  .takedown{font-size:13px; color:var(--cream-dim); border-top:1px solid var(--line); padding-top:16px;}
+  .takedown a{color:var(--teal); text-decoration:none;}
+  .takedown a:hover{text-decoration:underline;}
+  .copyright{font-family:'Space Mono',monospace; font-size:11px; color:var(--cream-dim); opacity:0.7; margin-top:18px;}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero">
+    <svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Neon street corner with a speaker stack, cassette and headphones">
+      <rect width="400" height="260" fill="#1b1236"/>
+      <rect x="0" y="70" width="90" height="190" fill="#241a44"/>
+      <rect x="310" y="50" width="90" height="210" fill="#20163e"/>
+      <rect x="95" y="105" width="65" height="155" fill="#2a1e4d"/>
+      <rect x="18" y="95" width="14" height="18" fill="#ff7a45" opacity="0.6"/>
+      <rect x="46" y="95" width="14" height="18" fill="#2ec4b6" opacity="0.4"/>
+      <rect x="325" y="80" width="14" height="18" fill="#ff7a45" opacity="0.5"/>
+      <rect x="358" y="80" width="14" height="18" fill="#f5e8d8" opacity="0.3"/>
+      <rect x="0" y="240" width="400" height="20" fill="#120a24"/>
+      <g transform="translate(150,130)">
+        <rect x="0" y="0" width="100" height="80" rx="7" fill="#2a1e4d" stroke="#ff7a45" stroke-width="1.5"/>
+        <circle cx="50" cy="27" r="18" fill="#170f2b" stroke="#2ec4b6" stroke-width="2"/>
+        <circle cx="50" cy="27" r="7" fill="#2ec4b6" opacity="0.5"/>
+        <circle cx="50" cy="60" r="11" fill="#170f2b" stroke="#f5e8d8" stroke-width="1.5" opacity="0.7"/>
+      </g>
+      <g transform="translate(55,165)">
+        <rect x="0" y="0" width="55" height="35" rx="4" fill="#1f1440" stroke="#f5e8d8" stroke-width="1.2" opacity="0.85"/>
+        <circle cx="15" cy="17" r="8" fill="none" stroke="#ff7a45" stroke-width="1.5"/>
+        <circle cx="40" cy="17" r="8" fill="none" stroke="#ff7a45" stroke-width="1.5"/>
+      </g>
+      <g transform="translate(285,155)">
+        <path d="M5,32 Q5,0 38,0 Q71,0 71,32" fill="none" stroke="#2ec4b6" stroke-width="3" stroke-linecap="round"/>
+        <rect x="-3" y="28" width="17" height="22" rx="5" fill="#170f2b" stroke="#2ec4b6" stroke-width="2"/>
+        <rect x="61" y="28" width="17" height="22" rx="5" fill="#170f2b" stroke="#2ec4b6" stroke-width="2"/>
+      </g>
+    </svg>
+    <div class="hero-overlay"></div>
+    <div class="eq" aria-hidden="true">
+      <span style="animation-delay:0s"></span><span style="animation-delay:0.15s"></span><span style="animation-delay:0.3s"></span>
+      <span style="animation-delay:0.1s"></span><span style="animation-delay:0.25s"></span><span style="animation-delay:0.05s"></span>
+      <span style="animation-delay:0.2s"></span><span style="animation-delay:0.35s"></span><span style="animation-delay:0.15s"></span>
+      <span style="animation-delay:0s"></span><span style="animation-delay:0.3s"></span><span style="animation-delay:0.1s"></span>
+    </div>
+    <div class="topbar">
+      <span class="online"><span class="dot"></span>—online</span>
+      <span class="plat-links">
+        <a href="https://open.spotify.com/playlist/2AVjI8Z57bqMJVtU3V9X1Q">Spotify</a>
+        <a href="https://music.youtube.com/playlist?list=PLTJ1PnzCWyFw">YT Music</a>
+      </span>
+    </div>
+    <div class="navrow">
+      <a href="https://abhishekbeats.in/playlists">Playlists</a>
+      <a href="https://abhishekbeats.in/songs">Songs</a>
+    </div>
+    <div class="hero-title">
+      <p class="hi-title">अभिषेकबीट्स</p>
+      <p class="en-title">Abhishek Beats · open all hours</p>
+    </div>
+  </div>
+
+  <div class="body-pad">
+
+    <div class="name-row">
+      <div class="badge" aria-hidden="true"></div>
+      <div>
+        <div class="hi-small">अभिषेक बीट्स</div>
+        <div class="en-small">Abhishek Beats</div>
+      </div>
+    </div>
+
+    <p class="tagline">Latest Hindi mashup songs of 2026, playing round the clock — the kind of tape that never stops at a neighbourhood barber shop.</p>
+
+    <p class="section-label">Rotations</p>
+    <div class="chips">
+      <a class="chip" href="https://abhishekbeats.in/playlists/highway-raat">Highway Raat</a>
+      <a class="chip" href="https://abhishekbeats.in/playlists/mashup-2026">Mashup 2026</a>
+      <a class="chip" href="https://abhishekbeats.in/playlists/latest-hits">Latest Hits</a>
+      <a class="chip" href="https://abhishekbeats.in/playlists/shaadi-sunday">Shaadi &amp; Sunday</a>
+      <a class="chip all" href="https://abhishekbeats.in/songs">All songs</a>
+    </div>
+    <div class="chips-links">
+      <a href="https://open.spotify.com/playlist/2AVjI8Z57bqMJVtU3V9X1Q">Spotify</a>
+      <a href="https://music.youtube.com/playlist?list=PLTJ1PnzCWyFw">YT Music</a>
+    </div>
+
+    <div class="player">
+      <div class="now" id="now-label" style="margin-bottom:10px;">Abhishek Beats radio</div>
+      <div class="yt-wrap">
+        <iframe
+          width="100%" height="200"
+          src="https://www.youtube.com/embed/videoseries?list=PL3fGMxK9u0hauHglS-tpZvGE6Ckp5LptA"
+          title="Abhishek Beats radio"
+          frameborder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+
+    <p class="credit">Audio plays through YouTube's embedded player. Nothing is hosted on this site, and all rights stay with the labels, composers and performers. Song credits are put together from the original mashup uploads.</p>
+
+    <p class="takedown">If you hold rights to anything here and want it taken off, email <a href="mailto:abhishek9211011@gmail.com">abhishek9211011@gmail.com</a> and it comes down.</p>
+
+    <p class="copyright">© 2026 abhishekbeats.in · contact: abhishek9211011@gmail.com</p>
+
+  </div>
+</div>
+
+</body>
+</html>
