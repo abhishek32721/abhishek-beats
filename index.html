@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Abhishek Beats — ambient street-corner radio</title>
 <meta name="description" content="Abhishek Beats: hamesha-on radio, latest Hindi mashup songs 2026.">
-<link rel="canonical" href="https://abhishekbeats.in/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -91,6 +90,8 @@
     display:flex; align-items:center; gap:10px;
   }
   .thumb{width:44px; height:44px; border-radius:50%; overflow:hidden; flex-shrink:0; background:var(--night-2); position:relative; border:1px solid var(--line);}
+  .thumb-fallback{position:absolute; inset:0; background:conic-gradient(var(--amber) 0deg 90deg, var(--night-2) 90deg 180deg, var(--teal) 180deg 270deg, var(--night-2) 270deg 360deg);}
+  .thumb img[src=""]{display:none;}
   .thumb img{width:100%; height:100%; object-fit:cover; display:block;}
   .thumb.playing{animation:spin 6s linear infinite;}
   @keyframes spin{to{transform:rotate(360deg);}}
@@ -135,8 +136,8 @@
         </span>
       </div>
       <div class="navrow">
-        <a class="navpill" href="https://abhishekbeats.in/playlists">Playlists</a>
-        <a class="navpill" href="https://abhishekbeats.in/songs">Songs</a>
+        <a class="navpill" href="#">Playlists</a>
+        <a class="navpill" href="#">Songs</a>
       </div>
     </div>
 
@@ -146,7 +147,7 @@
     </div>
 
     <div class="player">
-      <div class="thumb" id="thumb"><img id="thumb-img" src="https://i.ytimg.com/vi/N0jnLZxYwYc/hqdefault.jpg" alt=""></div>
+      <div class="thumb" id="thumb"><img id="thumb-img" src="" alt="" style="display:none;"><div class="thumb-fallback" id="thumb-fallback"></div></div>
       <div class="p-info">
         <div class="now" id="now-label">tuning in…</div>
         <div class="track" id="track-label">Abhishek Beats radio</div>
@@ -176,7 +177,7 @@
 
     <p class="takedown">If you hold rights to anything here and want it taken off, email <a href="mailto:abhishek9211011@gmail.com">abhishek9211011@gmail.com</a> and it comes down.</p>
 
-    <p class="copyright">© 2026 abhishekbeats.in · contact: abhishek9211011@gmail.com</p>
+    <p class="copyright">© 2026 · contact: abhishek9211011@gmail.com</p>
 
   </div>
 </div>
@@ -209,6 +210,17 @@
   /* YouTube audio player */
   var player;
   var poll;
+  var sources = [
+    'UUjKENf7bTijQAecowvhlAHQ',
+    'UU1eOZzUzBTZ6qOXbO7UOBuw',
+    'RDKKmkHQkIb7o',
+    'RDV0BxORa1epQ',
+    'RDi-93lNHOwPo',
+    'RD9hMC7NA0yMw',
+    'RDHX8YBnmq5gU',
+    'RDeg2JSyMBbC0'
+  ];
+  var currentSource = sources[Math.floor(Math.random()*sources.length)];
 
   function loadYT(){
     var tag = document.createElement('script');
@@ -222,13 +234,38 @@
     return m + ":" + (s<10?"0":"") + s;
   }
 
+  function pickNextSource(){
+    var options = sources.filter(function(s){ return s !== currentSource; });
+    return options[Math.floor(Math.random()*options.length)];
+  }
+
+  function updateThumbFromPlayer(){
+    if(!player || !player.getVideoData) return;
+    var data = player.getVideoData();
+    var trackLabel = document.getElementById('track-label');
+    if(data && data.title){ trackLabel.textContent = data.title; }
+    var vid = data && data.video_id;
+    if(vid){
+      var img = document.getElementById('thumb-img');
+      var fallback = document.getElementById('thumb-fallback');
+      img.src = 'https://i.ytimg.com/vi/' + vid + '/hqdefault.jpg';
+      img.style.display = 'block';
+      if(fallback) fallback.style.display = 'none';
+    }
+  }
+
   window.onYouTubeIframeAPIReady = function(){
     player = new YT.Player('yt-audio', {
       height: '1', width: '1',
-      playerVars: { listType: 'playlist', list: 'UUjKENf7bTijQAecowvhlAHQ', autoplay: 0, controls: 0 },
-      events: { 'onStateChange': onPlayerStateChange }
+      playerVars: { listType: 'playlist', list: currentSource, index: Math.floor(Math.random()*20), autoplay: 0, controls: 0 },
+      events: { 'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange }
     });
   };
+
+  function onPlayerReady(){
+    player.setShuffle(true);
+    setTimeout(updateThumbFromPlayer, 400);
+  }
 
   var playIconPlay = '<path d="M8 5v14l11-7z"/>';
   var playIconPause = '<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>';
@@ -236,7 +273,6 @@
   function onPlayerStateChange(e){
     var thumb = document.getElementById('thumb');
     var nowLabel = document.getElementById('now-label');
-    var trackLabel = document.getElementById('track-label');
     var playIcon = document.getElementById('play-icon');
     var playbtn = document.getElementById('playbtn');
 
@@ -245,10 +281,7 @@
       playIcon.innerHTML = playIconPause;
       playbtn.setAttribute('aria-label','Pause');
       nowLabel.textContent = 'now playing';
-      var data = player.getVideoData();
-      if(data && data.title){ trackLabel.textContent = data.title; }
-      var vid = data && data.video_id;
-      if(vid){ document.getElementById('thumb-img').src = 'https://i.ytimg.com/vi/' + vid + '/hqdefault.jpg'; }
+      updateThumbFromPlayer();
       startPoll();
     } else if(e.data === YT.PlayerState.PAUSED){
       thumb.classList.remove('playing');
@@ -257,9 +290,14 @@
       stopPoll();
     } else if(e.data === YT.PlayerState.BUFFERING){
       nowLabel.textContent = 'buffering…';
+    } else if(e.data === YT.PlayerState.CUED){
+      updateThumbFromPlayer();
     } else if(e.data === YT.PlayerState.ENDED){
       thumb.classList.remove('playing');
       playIcon.innerHTML = playIconPlay;
+      currentSource = pickNextSource();
+      player.loadPlaylist({ list: currentSource, listType: 'playlist', index: Math.floor(Math.random()*20) });
+      player.setShuffle(true);
     }
   }
 
